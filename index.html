@@ -54,7 +54,7 @@
             tick: function (time, timeDelta) {
                 // Rota el objeto constantemente en el eje Y
                 let rotation = this.el.getAttribute('rotation');
-                rotation.y += 0.5; // Velocidad de giro (puedes subirlo o bajarlo)
+                rotation.y += 0.5; // Velocidad de giro
                 this.el.setAttribute('rotation', rotation);
             }
         });
@@ -77,21 +77,24 @@
 
         <a-entity mindar-image-target="targetIndex: 0">
             
-            <!-- El componente 'rotar-mono' obliga al modelo a girar cuadro por cuadro -->
+            <!-- Modelo más grande (scale cambiado a 1.2) -->
             <a-gltf-model 
                 src="#modelo3d" 
                 position="0 0 0" 
-                scale="0.6 0.6 0.6" 
+                scale="1.2 1.2 1.2" 
                 rotar-mono>
             </a-gltf-model>
             
-            <!-- El cubo/estrella animado de arriba -->
-            <a-entity position="0 1.2 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear">
+            <!-- El cubo/estrella animado de arriba (subido a 1.8 en Y para acompañar el tamaño) -->
+            <a-entity position="0 1.8 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear">
                 <a-box width="0.25" height="0.25" depth="0.25" color="#00ff66" material="emissive: #00ff66; emissiveIntensity: 0.9"></a-box>
             </a-entity>
 
         </a-entity>
     </a-scene>
+
+</body>
+</html>
 
 </body>
 </html>
