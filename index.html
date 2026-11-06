@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebAR - Escaneo de Imagen</title>
+    
+    <!-- Librerías de A-Frame y MindAR -->
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #0d1117;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+        }
+
+        #ui-container {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            text-align: center;
+            background: rgba(13, 17, 23, 0.85);
+            border: 1px solid #00ff66;
+            padding: 12px 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.3);
+            max-width: 90%;
+        }
+
+        h1 {
+            font-size: 1rem;
+            margin: 0 0 4px 0;
+            color: #00ff66;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        p {
+            font-size: 0.8rem;
+            margin: 0;
+            color: #c9d1d9;
+        }
+    </style>
+
+    <!-- Script personalizado para forzar el giro del mono -->
+    <script>
+        AFRAME.registerComponent('rotar-mono', {
+            tick: function (time, timeDelta) {
+                // Rota el objeto constantemente en el eje Y
+                let rotation = this.el.getAttribute('rotation');
+                rotation.y += 0.5; // Velocidad de giro (puedes subirlo o bajarlo)
+                this.el.setAttribute('rotation', rotation);
+            }
+        });
+    </script>
+</head>
+<body>
+
+    <div id="ui-container">
+        <h1>Realidad Aumentada</h1>
+        <p>Apunta con la cámara de tu celular a la imagen para ver los modelos en movimiento.</p>
+    </div>
+
+    <a-scene mindar-image="imageTargetSrc: targets.mind; uiScanning: yes;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+        
+        <a-assets>
+            <a-asset-item id="modelo3d" src="modelo.glb"></a-asset-item>
+        </a-assets>
+
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+        <a-entity mindar-image-target="targetIndex: 0">
+            
+            <!-- El componente 'rotar-mono' obliga al modelo a girar cuadro por cuadro -->
+            <a-gltf-model 
+                src="#modelo3d" 
+                position="0 0 0" 
+                scale="0.6 0.6 0.6" 
+                rotar-mono>
+            </a-gltf-model>
+            
+            <!-- El cubo/estrella animado de arriba -->
+            <a-entity position="0 1.2 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear">
+                <a-box width="0.25" height="0.25" depth="0.25" color="#00ff66" material="emissive: #00ff66; emissiveIntensity: 0.9"></a-box>
+            </a-entity>
+
+        </a-entity>
+    </a-scene>
+
+</body>
+</html>
